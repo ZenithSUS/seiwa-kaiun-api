@@ -107,8 +107,9 @@ cron.schedule("0 16 * * *", async () => {
         );
 
         if (remainingDays === 0) {
+          await updateRequirementById({status: "Expired"}, requirement.$id) 
           console.log(
-            `Updated status to Expired for requirement ID: ${requirement.id}`
+            `Updated status to Expired for requirement ID: ${requirement.$id}`
           );
         }
       });
