@@ -46,7 +46,7 @@ cron.schedule("* * * * *", async () => {
       requirements.forEach(requirement => {
         const expirationDate = new Date(requirement.expirationDate);
         const remainingDays = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
-        const frequency = requirement.frequency;
+        const frequency = requirement.frequencyOfCompliance;
 
         if (
           (remainingDays <= 15 && frequency === "Monthly") ||
