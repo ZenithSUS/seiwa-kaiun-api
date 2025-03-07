@@ -37,7 +37,7 @@ cron.schedule("* * * * *", async () => {
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 15) {
+  // if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 15) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const requirements = await getRequirements();
@@ -74,7 +74,7 @@ cron.schedule("* * * * *", async () => {
       console.log("Error in cron job:", error);
     }
     console.log("Cron job finished at:", philippineTime.toISOString());
-  }
+  // }
 });
 
 // Schedule the cron job to run daily at midnight Philippine time (UTC+8)
