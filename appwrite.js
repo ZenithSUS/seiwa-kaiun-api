@@ -9,6 +9,7 @@ client
 
 const databases = new sdk.Databases(client);
 
+
 const DATABASE_ID = process.env.APP_WRITE_DATABASE_ID;
 const REQUIREMENTS_ID = process.env.COLLECTION_ID_REQUIREMENTS;
 
