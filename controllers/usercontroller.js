@@ -1,4 +1,4 @@
-import { addUser, getUsers } from "../appwrite.js";
+import { addUser, getUsers, getUser } from "../appwrite.js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -19,16 +19,10 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   try {
-    const users = [];
-    const user = users.find((u) => u.id === req.params.id);
-    if (!user) {
-      res.status(404).json({
-        status: res.statusCode,
-        message: "User not found",
-      });
-    } else {
-      res.status(200).json(user);
-    }
+    const id = req.params.id;
+    const user = await getUser(id);
+    res.status(200).json(user);
+    
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,

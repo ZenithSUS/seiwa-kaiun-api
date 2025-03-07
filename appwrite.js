@@ -7,7 +7,7 @@ client
   .setProject(process.env.APP_WRITE_PROJECT_ID)
   .setKey(process.env.APP_WRITE_API_KEY);
 
-const databases = new sdk.Databases(client);
+export const databases = new sdk.Databases(client);
 
 const DATABASE_ID = process.env.APP_WRITE_DATABASE_ID;
 const REQUIREMENTS_ID = process.env.COLLECTION_ID_REQUIREMENTS;
@@ -19,6 +19,11 @@ export const addUser = async (data) => {
 
 export const getUsers = async () => {
   return await databases.listDocuments(DATABASE_ID, USERS_ID);
+};
+
+export const getUser = async (userId) => {
+  const result = await databases.getDocument(DATABASE_ID, USERS_ID, userId);
+  return result;
 };
 
 // CRUD Operations in Requirement
