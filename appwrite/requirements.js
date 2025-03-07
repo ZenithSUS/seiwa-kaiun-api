@@ -1,4 +1,5 @@
 import { DATABASE_ID, REQUIREMENTS_ID, databases } from "./index.js";
+import sdk from "node-appwrite";
 
 export const addRequirement = async (data) => {
   await databases.createDocument(

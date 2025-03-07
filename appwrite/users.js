@@ -1,4 +1,5 @@
 import { DATABASE_ID, USERS_ID, databases } from "./index.js";
+import sdk from "node-appwrite";
 
 export const addUser = async (data) => {
   await databases.createDocument(DATABASE_ID, USERS_ID, sdk.ID.unique(), data);
