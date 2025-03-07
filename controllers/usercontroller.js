@@ -1,9 +1,9 @@
-
+import { addUser, getUsers } from "../appwrite.js";
 
 export const getAllUsers = async (req, res) => {
   try {
     const limit = req.query.limit;
-    const users = [];
+    const users = await getUsers();
 
     if (!isNaN(limit) && limit > 0) {
       return res.status(200).json(users.slice(0, limit));
@@ -38,10 +38,9 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { firstName, middleName, lastName, department, email, password } =
-    req.body;
+  const { firstName, middleName, lastName, department, email } = req.body;
 
-  if (!firstName || !lastName || !department || !email || !password) {
+  if (!firstName || !lastName || !department || !email) {
     return res.status(401).json({
       status: res.statusCode,
       message: "All fields are required",
@@ -49,15 +48,12 @@ export const createUser = async (req, res) => {
   }
 
   try {
-   
-    const users = []
+    await addUser(req.body);
 
-    if (users) {
-      return res.status(200).json({
-        status: res.statusCode,
-        message: "User created successfully",
-      });
-    }
+    return res.status(200).json({
+      status: res.statusCode,
+      message: "User created successfully",
+    });
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,

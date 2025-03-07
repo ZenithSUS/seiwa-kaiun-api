@@ -9,10 +9,19 @@ client
 
 const databases = new sdk.Databases(client);
 
-
 const DATABASE_ID = process.env.APP_WRITE_DATABASE_ID;
 const REQUIREMENTS_ID = process.env.COLLECTION_ID_REQUIREMENTS;
+const USERS_ID = process.env.COLLECTION_ID_USERS;
 
+export const addUser = async (data) => {
+  await databases.createDocument(DATABASE_ID, USERS_ID, sdk.ID.unique(), data);
+};
+
+export const getUsers = async () => {
+  return await databases.listDocuments(DATABASE_ID, USERS_ID);
+};
+
+// CRUD Operations in Requirement
 export const addRequirement = async (data) => {
   await databases.createDocument(
     DATABASE_ID,
@@ -27,33 +36,32 @@ export const getRequirements = async () => {
 };
 
 export const getRequirement = async (documentId) => {
-    const result = await databases.getDocument(
-        DATABASE_ID, 
-        REQUIREMENTS_ID,
-        documentId,
-    );
+  const result = await databases.getDocument(
+    DATABASE_ID,
+    REQUIREMENTS_ID,
+    documentId
+  );
 
-    return result
-}
+  return result;
+};
 
 export const updateRequirementById = async (data, documentId) => {
-    const result = await databases.updateDocument(
-        DATABASE_ID, 
-        REQUIREMENTS_ID,
-        documentId,
-        data
-    );
+  const result = await databases.updateDocument(
+    DATABASE_ID,
+    REQUIREMENTS_ID,
+    documentId,
+    data
+  );
 
-    return result;
-}
+  return result;
+};
 
 export const deleteRequirementById = async (documentId) => {
-    const result = await databases.deleteDocument(
-        DATABASE_ID, 
-        REQUIREMENTS_ID,
-        documentId,
-    );
+  const result = await databases.deleteDocument(
+    DATABASE_ID,
+    REQUIREMENTS_ID,
+    documentId
+  );
 
-    return result;
-}
-
+  return result;
+};
