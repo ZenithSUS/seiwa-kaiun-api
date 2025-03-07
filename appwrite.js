@@ -26,6 +26,27 @@ export const getUser = async (userId) => {
   return result;
 };
 
+export const UpdateUserbyID = async (data, userId) => {
+  const result = await databases.updateDocument(
+    DATABASE_ID,
+    USERS_ID,
+    userId,
+    data
+  );
+  return result;
+};
+
+export const deleteUserByID = async (userId) => {
+  const result = await databases.deleteDocument(
+    DATABASE_ID,
+    USERS_ID,
+    userId,
+  );
+  return result;
+};
+
+
+
 // CRUD Operations in Requirement
 export const addRequirement = async (data) => {
   await databases.createDocument(
@@ -70,3 +91,4 @@ export const deleteRequirementById = async (documentId) => {
 
   return result;
 };
+
