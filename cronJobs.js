@@ -31,8 +31,8 @@ const sendEmail = (email, subject, text, html) => {
 };
 
 // Schedule the cron job to run daily at 2:15 PM Philippine time (6:15 AM UTC)
-cron.schedule("15 6 * * *", async () => {
-  // 6:05 AM UTC is 2:05 PM UTC+8
+cron.schedule("* * * * *", async () => {
+  // 6:05 AM UTC is 2:21 PM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
@@ -42,7 +42,7 @@ cron.schedule("15 6 * * *", async () => {
     try {
       const requirements = await getRequirements();
       const today = new Date();
-
+      console.log(requirements);
       requirements.forEach(requirement => {
         const expirationDate = new Date(requirement.expirationDate);
         const remainingDays = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
