@@ -30,19 +30,19 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 2:15 PM Philippine time (6:15 AM UTC)
-cron.schedule("21 6 * * *", async () => {
-  // 6:05 AM UTC is 2:05 PM UTC+8
+// Schedule the cron job to run daily at 2:30 PM Philippine time (6:30 AM UTC)
+cron.schedule("30 6 * * *", async () => {
+  // 6:30 AM UTC is 2:30 PM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 15) {
+  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 30) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
-      const requirements = await getRequirements();
+      const {documents: requirements} = await getRequirements();
       const today = new Date();
-      console.log(requirements);
+    
       requirements.forEach(requirement => {
         const expirationDate = new Date(requirement.expirationDate);
         const remainingDays = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
