@@ -1,4 +1,4 @@
-import { addUser, getUsers, getUser } from "../appwrite.js";
+import { addUser, getUsers, getUser } from "../appwrite/users.js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ export const getAllUsers = async (req, res) => {
     if (!isNaN(limit) && limit > 0) {
       return res.status(200).json(users.slice(0, limit));
     }
-    res.status(200).json(users);
+    res.status(200).json(users.documents);
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
@@ -22,7 +22,7 @@ export const getUserById = async (req, res) => {
     const id = req.params.id;
     const user = await getUser(id);
     res.status(200).json(user);
-    
+
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,

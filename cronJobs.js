@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import nodemailer from "nodemailer";
-import { getRequirements } from "./appwrite.js";
+import { getRequirements } from "./appwrite/requirements.js";
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -30,14 +30,14 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 2:05 PM Philippine time (6:05 AM UTC)
-cron.schedule("5 6 * * *", async () => {
+// Schedule the cron job to run daily at 2:15 PM Philippine time (6:15 AM UTC)
+cron.schedule("15 6 * * *", async () => {
   // 6:05 AM UTC is 2:05 PM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 5) {
+  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 15) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const requirements = await getRequirements();
@@ -53,7 +53,6 @@ cron.schedule("5 6 * * *", async () => {
           (remainingDays <= 90 && (frequency === "Annual" || frequency === "Semi Annual")) ||
           (remainingDays <= 30 && frequency === "Quarterly")
         ) {
-          if (requirement.status !== "Expired") {
             const email = requirement.personInCharge;
             const subject = "Subscription Expiration Reminder";
             const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
@@ -69,7 +68,6 @@ cron.schedule("5 6 * * *", async () => {
               </div>
             `;
             sendEmail(email, subject, text, html);
-          }
         }
       });
     } catch (error) {

@@ -4,7 +4,7 @@ import {
   getRequirement,
   updateRequirementById,
   deleteRequirementById,
-} from "../appwrite.js";
+} from "../appwrite/requirements.js";
 import { calculateExpirationDate } from "../utils/expiration-date.js";
 
 // Get all requirements
