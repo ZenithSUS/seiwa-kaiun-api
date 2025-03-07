@@ -35,7 +35,7 @@ const sendEmail = (email, subject, text, html) => {
 
 // Schedule the cron job to run daily at 8:00 AM Philippine time (12:00 AM UTC)
 cron.schedule("0 0 * * *", async () => {
-  // 12:00 AM UTC is 8:00 aM UTC+8
+  // 12:00 AM UTC is 8:00 AM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
@@ -54,10 +54,13 @@ cron.schedule("0 0 * * *", async () => {
         const frequency = requirement.frequencyOfCompliance;
 
         if (
-          (remainingDays <= 15 && frequency === "Monthly") ||
-          (remainingDays <= 90 &&
-            (frequency === "Annual" || frequency === "Semi Annual")) ||
-          (remainingDays <= 30 && frequency === "Quarterly")
+          requirement.status !== "Expired" && // Check if status is not Expired
+          (
+            (remainingDays <= 15 && frequency === "Monthly") ||
+            (remainingDays <= 90 &&
+              (frequency === "Annual" || frequency === "Semi Annual")) ||
+            (remainingDays <= 30 && frequency === "Quarterly")
+          )
         ) {
           const email = requirement.personInCharge;
           const subject = "Subscription Expiration Reminder";
