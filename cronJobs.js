@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import nodemailer from "nodemailer";
-import { getRequirements } from "./appwrite/requirements.js";
+import { getRequirements, updateRequirementById } from "./appwrite/requirements.js";
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -31,18 +31,18 @@ const sendEmail = (email, subject, text, html) => {
 };
 
 // Schedule the cron job to run daily at 2:30 PM Philippine time (6:30 AM UTC)
-cron.schedule("30 6 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   // 6:30 AM UTC is 2:30 PM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 30) {
+  // if (philippineTime.getHours() === 14 && philippineTime.getMinutes() === 30) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const {documents: requirements} = await getRequirements();
       const today = new Date();
-    
+      console.log(requirements)
       requirements.forEach(requirement => {
         const expirationDate = new Date(requirement.expirationDate);
         const remainingDays = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
@@ -74,7 +74,7 @@ cron.schedule("30 6 * * *", async () => {
       console.log("Error in cron job:", error);
     }
     console.log("Cron job finished at:", philippineTime.toISOString());
-  }
+  // }
 });
 
 // Schedule the cron job to run daily at midnight Philippine time (UTC+8)
@@ -88,7 +88,7 @@ cron.schedule("0 16 * * *", async () => {
     console.log("Midnight cron job started at:", philippineTime.toISOString());
     try {
     
-      const requirements = await getRequirements();
+      const { documents: requirements } = await getRequirements();
 
       const today = new Date();
 
@@ -97,10 +97,9 @@ cron.schedule("0 16 * * *", async () => {
         const remainingDays = Math.ceil(
           (expiration - today) / (1000 * 60 * 60 * 24)
         );
-        const requirementsRef = doc(db, "Requirements", requirement.id);
 
         if (remainingDays === 0) {
-          await updateDoc(requirementsRef, { status: "Expired" });
+          
           console.log(
             `Updated status to Expired for requirement ID: ${requirement.id}`
           );
