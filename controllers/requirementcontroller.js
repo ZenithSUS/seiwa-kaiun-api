@@ -3,6 +3,8 @@ import {
   getRequirements,
   getRequirement,
   updateRequirementById,
+  updateDocumentReference,
+  updateDocumentRenewal,
   deleteRequirementById,
 } from "../appwrite/requirements.js";
 import { calculateExpirationDate } from "../utils/expiration-date.js";
@@ -22,7 +24,9 @@ export const getAllRequirements = async (req, res) => {
     if (department) {
       return res
         .status(200)
-        .json(requirements.documents.filter((r) => r.department === department));
+        .json(
+          requirements.documents.filter((r) => r.department === department)
+        );
     } else {
       return res.status(200).json(requirements.documents);
     }
@@ -67,10 +71,10 @@ export const createRequirement = async (req, res) => {
       personInCharge,
       entity,
       status,
-      // uploadedFileUrl,
+      uploadedId,
       dateSubmitted,
       expiration,
-      // documentReference,
+      documentReference,
     } = req.body;
 
     console.log(req.body);
@@ -82,10 +86,10 @@ export const createRequirement = async (req, res) => {
       !personInCharge ||
       !entity ||
       !status ||
-      // !uploadedFileUrl ||
+      !uploadedId ||
       !dateSubmitted ||
-      !expiration
-      // !documentReference
+      !expiration ||
+      !documentReference
     ) {
       return res.status(401).json({
         status: res.statusCode,
@@ -111,7 +115,7 @@ export const createRequirement = async (req, res) => {
 export const updateRequirement = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    await updateRequirementById(req.body, requirementId)
+    await updateRequirementById(req.body, requirementId);
 
     return res.status(200).json({
       status: res.statusCode,
@@ -137,13 +141,8 @@ export const updateRequirementRenewal = async (req, res) => {
       });
     }
 
-    console.log(requirementId);
-    await updateDoc(doc(db, "Requirements", requirementId), {
-      renewal,
-      dateSubmitted: renewal,
-      expiration: newExpiration,
-    });
-
+    await updateDocumentRenewal({ renewal: newExpiration}, requirementId);
+    
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement updated successfully",
@@ -159,7 +158,8 @@ export const updateRequirementRenewal = async (req, res) => {
 export const updateRequirementReference = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    const { documentReference, uploadedFileUrl } = req.body;
+
+    await updateDocumentReference(req.body, requirementId);
 
     return res.status(200).json({
       status: res.statusCode,
