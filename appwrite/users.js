@@ -1,8 +1,11 @@
-import { DATABASE_ID, USERS_ID, databases } from "./index.js";
+import { DATABASE_ID, USERS_ID, databases, users } from "./index.js";
 import sdk from "node-appwrite";
 
 export const addUser = async (data) => {
-  await databases.createDocument(DATABASE_ID, USERS_ID, sdk.ID.unique(), data);
+  const { password, name, ...values } = data;
+  const res = await users.create(sdk.ID.unique(), values.email, undefined, password, name);
+  await users.updateLabels(res.$id, ['user', values.department]); 
+  return await databases.createDocument(DATABASE_ID, USERS_ID, res.$id, values);
 };
 
 export const getUsers = async () => {
@@ -25,12 +28,6 @@ export const UpdateUserbyID = async (data, userId) => {
 };
 
 export const deleteUserByID = async (userId) => {
-  const result = await databases.deleteDocument(
-    DATABASE_ID,
-    USERS_ID,
-    userId,
-  );
+  const result = await databases.deleteDocument(DATABASE_ID, USERS_ID, userId);
   return result;
 };
-
-

@@ -1,5 +1,5 @@
-import { DATABASE_ID, REQUIREMENTS_ID, databases } from "./index.js";
-import sdk from "node-appwrite";
+import { DATABASE_ID, REQUIREMENTS_ID, BUCKET_ID, databases, storage } from "./index.js";
+import sdk, { InputFile } from "node-appwrite";
 
 export const addRequirement = async (data) => {
   await databases.createDocument(
@@ -45,3 +45,9 @@ export const deleteRequirementById = async (documentId) => {
 
   return result;
 };
+
+
+export const uploadRequirement = async (file) => {
+  const nodeFile = InputFile.fromPath("", file)
+  await storage.createFile(BUCKET_ID, sdk.ID.unique(), nodeFile);
+}

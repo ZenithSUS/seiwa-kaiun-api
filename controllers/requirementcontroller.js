@@ -22,7 +22,7 @@ export const getAllRequirements = async (req, res) => {
     if (department) {
       return res
         .status(200)
-        .json(requirements.filter((r) => r.department === department));
+        .json(requirements.documents.filter((r) => r.department === department));
     } else {
       return res.status(200).json(requirements.documents);
     }

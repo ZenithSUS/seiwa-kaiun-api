@@ -1,4 +1,8 @@
-import { addUser, getUsers, getUser } from "../appwrite/users.js";
+import {
+  addUser,
+  getUsers,
+  getUser,
+} from "../appwrite/users.js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -22,7 +26,6 @@ export const getUserById = async (req, res) => {
     const id = req.params.id;
     const user = await getUser(id);
     res.status(200).json(user);
-
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
@@ -32,17 +35,19 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { firstName, middleName, lastName, department, email } = req.body;
+  const { firstName, middleName, lastName, department, email, password } = req.body;
 
   if (!firstName || !lastName || !department || !email) {
-    return res.status(401).json({
+    return res.status(400).json({
       status: res.statusCode,
       message: "All fields are required",
     });
   }
 
   try {
-    await addUser(req.body);
+    const name = `${firstName} ${middleName} ${lastName}`;
+    await addUser({ email, firstName, lastName, middleName, department, name, password});
+    
 
     return res.status(200).json({
       status: res.statusCode,
@@ -59,8 +64,8 @@ export const createUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const users = [];
-    const user = users.find((doc) => doc.id === userId);
+    const users = await getUser();
+
 
     if (!user) {
       return res.status(404).json({
