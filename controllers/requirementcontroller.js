@@ -71,7 +71,7 @@ export const createRequirement = async (req, res) => {
       personInCharge,
       entity,
       status,
-      uploadedId,
+      uploadedFileURL,
       dateSubmitted,
       expiration,
       documentReference,
@@ -86,7 +86,7 @@ export const createRequirement = async (req, res) => {
       !personInCharge ||
       !entity ||
       !status ||
-      !uploadedId ||
+      !uploadedFileURL ||
       !dateSubmitted ||
       !expiration ||
       !documentReference
