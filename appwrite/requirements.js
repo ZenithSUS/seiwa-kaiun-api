@@ -1,4 +1,4 @@
-import { DATABASE_ID, REQUIREMENTS_ID, BUCKET_ID, databases, storage } from "./index.js";
+import { DATABASE_ID, REQUIREMENTS_ID,  databases } from "./index.js";
 import sdk from "node-appwrite";
 
 export const addRequirement = async (data) => {
