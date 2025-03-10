@@ -106,7 +106,7 @@ export const updateRequirementRenewal = async (req, res) => {
     const requirementId = req.params.id;
     const { renewal, frequency } = req.body;
     const newExpiration = calculateExpirationDate(renewal, frequency);
-
+    console.log(newExpiration)
     if (!renewal || !frequency) {
       return res.status(401).json({
         message: "Renewal or Frequency is required",
