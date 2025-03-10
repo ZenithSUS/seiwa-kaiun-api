@@ -63,39 +63,6 @@ export const getRequirementById = async (req, res) => {
 // Create a new requirement
 export const createRequirement = async (req, res) => {
   try {
-    const {
-      department,
-      complianceList,
-      frequencyOfCompliance,
-      typeOfCompliance,
-      personInCharge,
-      entity,
-      status,
-      uploadedFileURL,
-      dateSubmitted,
-      expiration,
-      documentReference,
-    } = req.body;
-
-    if (
-      !department ||
-      !complianceList ||
-      !frequencyOfCompliance ||
-      !typeOfCompliance ||
-      !personInCharge ||
-      !entity ||
-      !status ||
-      !uploadedFileURL ||
-      !dateSubmitted ||
-      !expiration ||
-      !documentReference
-    ) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: "Unprocessable entity",
-      });
-    }
-
     await addRequirement(req.body);
 
     return res.status(201).json({
@@ -140,8 +107,8 @@ export const updateRequirementRenewal = async (req, res) => {
       });
     }
 
-    await updateDocumentRenewal({ renewal: newExpiration}, requirementId);
-    
+    await updateDocumentRenewal({ renewal: newExpiration }, requirementId);
+
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement updated successfully",
