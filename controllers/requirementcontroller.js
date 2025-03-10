@@ -77,7 +77,6 @@ export const createRequirement = async (req, res) => {
       documentReference,
     } = req.body;
 
-    console.log(req.body);
     if (
       !department ||
       !complianceList ||
@@ -91,7 +90,7 @@ export const createRequirement = async (req, res) => {
       !expiration ||
       !documentReference
     ) {
-      return res.status(401).json({
+      return res.status(404).json({
         status: res.statusCode,
         message: "Unprocessable entity",
       });
