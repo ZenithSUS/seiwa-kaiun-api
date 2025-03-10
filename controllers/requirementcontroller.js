@@ -114,7 +114,7 @@ export const updateRequirementRenewal = async (req, res) => {
     }
 
     await updateDocumentRenewal(
-      { expiration: newExpiration, dateSubmitted: renewal, renewal: renewal },
+      { expiration: "Bruh", dateSubmitted: renewal, renewal: renewal },
       requirementId
     );
 
