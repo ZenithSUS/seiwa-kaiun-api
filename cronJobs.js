@@ -107,7 +107,23 @@ cron.schedule("0 16 * * *", async () => {
         );
 
         if (remainingDays === 0) {
-          await updateRequirementById({status: "Expired"}, requirement.$id) 
+          await updateRequirementById({status: "Expired"}, requirement.$id);
+          const email = requirement.personInCharge;
+          const subject = "Subscription Expired";
+          const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" has expired.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
+          const html = `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                <h2>Subscription Expired</h2>
+                <p>Dear ${requirement.personInCharge},</p>
+                <p>Your subscription "<strong>${requirement.complianceList}</strong>" has expired.</p>
+                <p>Please take the necessary actions.</p>
+                <p>Best regards,</p>
+                <p>Your Company</p>
+                <a href="http://example.com" style="background-color: #FF0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Renew Now</a>
+              </div>
+            `;
+          sendEmail(email, subject, text, html);
+
           console.log(
             `Updated status to Expired for requirement ID: ${requirement.$id}`
           );
