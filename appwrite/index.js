@@ -3,7 +3,7 @@ import sdk from "node-appwrite";
 const client = new sdk.Client();
 
 client
-  .setEndpoint("https://cloud.appwrite.io/v1")
+  .setEndpoint(process.env.APP_WRITE_ENDPOINT_KEY)
   .setProject(process.env.APP_WRITE_PROJECT_ID)
   .setKey(process.env.APP_WRITE_API_KEY);
 
