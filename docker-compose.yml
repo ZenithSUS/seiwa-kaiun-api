@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  node-application:
+    image: node
+    container_name: node-application
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    command: ["/app/entrypoint.sh"]
+    env_file:
+      - .env
+    networks:
+      - monitoring-system
+
+networks:
+  monitoring-system:
+    driver: bridge
