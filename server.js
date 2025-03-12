@@ -8,9 +8,12 @@ import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { error } from "./middleware/error.js";
 import "./cronJobs.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Port number
-const port = process.env.PORT || 8000;
+const port = process.env.NODE_ENV === "development" ? 8080 : false || 8000;
 
 // Base directory
 const __filename = fileURLToPath(import.meta.url);
@@ -43,6 +46,10 @@ app.use("/api/requirements", requirments);
 // Error Handlers
 app.use(notFound);
 app.use(error);
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
