@@ -2,6 +2,7 @@ import {
   addUser,
   getUsers,
   getUser,
+  updateUser as editUser,
 } from "../appwrite/users.js";
 
 export const getAllUsers = async (req, res) => {
@@ -60,6 +61,33 @@ export const createUser = async (req, res) => {
     });
   }
 };
+
+export const updateUser = async (req, res) => {
+  const { firstName, middleName, lastName, department, email } = req.body;
+  const id = req.params.id; 
+
+  if (!firstName || !lastName || !department || !email) {
+    return res.status(400).json({
+      status: res.statusCode,
+      message: "All fields are required",
+    });
+  }
+
+  try {
+    await editUser({ email, firstName, lastName, middleName, department }, id);
+
+    return res.status(200).json({
+      status: res.statusCode,
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+};
+
 
 export const deleteUser = async (req, res) => {
   try {

@@ -17,7 +17,7 @@ export const getUser = async (userId) => {
   return result;
 };
 
-export const UpdateUserbyID = async (data, userId) => {
+export const updateUser = async (data, userId) => {
   const result = await databases.updateDocument(
     DATABASE_ID,
     USERS_ID,

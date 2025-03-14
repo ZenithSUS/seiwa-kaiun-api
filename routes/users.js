@@ -10,6 +10,7 @@ import {
   getUserById,
   createUser,
   deleteUser,
+  updateUser,
 } from "../controllers/usercontroller.js";
 
 // Get routes
@@ -18,6 +19,9 @@ router.get("/:id", getUserById);
 
 // Post routes
 router.post("/", createUser);
+
+// Put routes
+router.put("/:id", updateUser);
 
 // Delete routes
 router.delete("/:id", deleteUser);
