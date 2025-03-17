@@ -4,6 +4,8 @@ import {
   getRequirements,
   updateRequirementById,
 } from "./appwrite/requirements.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -72,8 +74,8 @@ cron.schedule("0 0 * * *", async () => {
                 <p>Your subscription "<strong>${requirement.complianceList}</strong>" is expiring in ${remainingDays} days.</p>
                 <p>Please take the necessary actions.</p>
                 <p>Best regards,</p>
-                <p>Your Company</p>
-                <a href="http://example.com" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
+                <p>Seiwa Kaiun Philippines Inc.</p>
+                <a href=${process.env.NODE_ENV === "development" ? process.env.APP_FRONTEND_URL_DEV : process.env.APP_FRONTEND_URL} style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
               </div>
             `;
           sendEmail(email, subject, text, html);
@@ -118,8 +120,8 @@ cron.schedule("0 16 * * *", async () => {
                 <p>Your subscription "<strong>${requirement.complianceList}</strong>" has expired.</p>
                 <p>Please take the necessary actions.</p>
                 <p>Best regards,</p>
-                <p>Your Company</p>
-                <a href="http://example.com" style="background-color: #FF0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Renew Now</a>
+                <p>Seiwa Kaiun Philippines Inc.</p>
+                <a href=${process.env.NODE_ENV === "development" ? process.env.APP_FRONTEND_URL_DEV : process.env.APP_FRONTEND_URL} style="background-color: #FF0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Renew Now</a>
               </div>
             `;
           sendEmail(email, subject, text, html);
