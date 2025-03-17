@@ -1,5 +1,7 @@
 import sdk from "node-appwrite";
+import dotenv from "dotenv";
 const client = new sdk.Client();
+dotenv.config();
 
 export const isProd = process.env.NODE_ENV === 'production';
 console.log(process.env.NODE_ENV);

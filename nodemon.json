@@ -1,0 +1,19 @@
+{
+    "watch": ["*.*"], 
+    "ext": "*",
+    "ignore": [
+        ".git",
+        ".gitignore",
+        "node_modules/**/node_modules",
+        "package-lock.json",
+        ".vscode",
+        "docker-compose.yml",
+        "Dockerfile",
+        "entrypoint.sh",
+        "README.md"
+    ],
+    "exec": "npm install && node server.js",
+    "events": {
+        "restart": "/docker/kill-node.sh && npm install && node server.js"
+    }
+}
