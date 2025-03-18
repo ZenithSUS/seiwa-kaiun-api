@@ -6,6 +6,7 @@ import {
 } from "./appwrite/requirements.js";
 import dotenv from "dotenv";
 import { checkFrequency } from "./utils/check-frequency.js";
+import { isProcess } from "./utils/check-onprocess.js";
 dotenv.config();
 
 // Configure nodemailer
@@ -56,7 +57,10 @@ cron.schedule("0 0 * * *", async () => {
         );
         const frequency = requirement.frequencyOfCompliance;
 
-        if (checkFrequency(requirement.status, remainingDays, frequency)) {
+        if (
+          checkFrequency(requirement.status, remainingDays, frequency) &&
+          isProcess(requirement.status, requirement.onProcessedDate, frequency)
+        ) {
           const email = requirement.personInCharge;
           const subject = "Subscription Expiration Reminder";
           const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
