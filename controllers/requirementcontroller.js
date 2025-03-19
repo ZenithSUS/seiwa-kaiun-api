@@ -12,14 +12,9 @@ import { calculateExpirationDate } from "../utils/expiration-date.js";
 // Get all requirements
 export const getAllRequirements = async (req, res) => {
   try {
-    const limit = req.query.limit;
     const department = req.query.dept;
 
     const requirements = await getRequirements();
-
-    if (!isNaN(limit) && limit > 0) {
-      return res.status(200).json(requirements.slice(0, limit));
-    }
 
     if (department) {
       return res
