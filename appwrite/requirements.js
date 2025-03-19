@@ -23,7 +23,7 @@ export const getRequirements = async () => {
 
     if (documents.length === 0) break;
 
-    allDocuments = [...allDocuments, ...documents];
+    allDocuments = [...allDocuments, ...documents.documents];
 
     offset += limit;
   }
