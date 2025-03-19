@@ -38,13 +38,13 @@ const sendEmail = (email, subject, text, html) => {
 };
 
 // Schedule the cron job to run daily at 8:00 AM Philippine time (12:00 AM UTC)
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   // 12:00 AM UTC is 8:00 AM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
+  // if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const { documents: requirements } = await getRequirements();
@@ -59,7 +59,7 @@ cron.schedule("0 0 * * *", async () => {
 
         if (
           checkFrequency(requirement.status, remainingDays, frequency) &&
-          isProcess(requirement.status, requirement.onProcessedDate, frequency)
+          isProcess(requirement.status, expirationDate, requirement.onProcessedDate, frequency)
         ) {
           const email = requirement.personInCharge;
           const subject = "Subscription Expiration Reminder";
@@ -88,7 +88,7 @@ cron.schedule("0 0 * * *", async () => {
       console.log("Error in cron job:", error);
     }
     console.log("Cron job finished at:", philippineTime.toISOString());
-  }
+  // }
 });
 
 // Schedule the cron job to run daily at midnight Philippine time (UTC+8)

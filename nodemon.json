@@ -1,5 +1,5 @@
 {
-    "watch": ["*.*"], 
+    "watch": ["*.*", ".env"], 
     "ext": "*",
     "ignore": [
         ".git",
@@ -12,8 +12,10 @@
         "entrypoint.sh",
         "README.md"
     ],
-    "exec": "npm install && node server.js",
+    "env": {
+        "NODE_ENV": "production"
+    },
     "events": {
-        "restart": "/docker/kill-node.sh && npm install && node server.js"
+        "restart": "npm install"
     }
 }

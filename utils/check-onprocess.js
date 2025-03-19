@@ -1,22 +1,20 @@
-export const isProcess = (status, processedDate, frequency) => {
+export const isProcess = (status, expirationDate, onProcessedDate, frequency) => {
   if (status !== "On Process" || frequency === "Monthly") return true;
 
-  if (processedDate === null || !processedDate) return false;
+  if(!onProcessedDate || onProcessedDate === null || onProcessedDate === "") return false
 
   const today = new Date();
-  const processDateFormat = new Date(processedDate);
+  const expiration = new Date(expirationDate);
 
-  const elapseDays = Math.ceil(
-    Math.floor((today - processDateFormat)) / (1000 * 60 * 60 * 24)
+  const remainingDays = Math.ceil(
+    Math.floor((expiration - today)) / (1000 * 60 * 60 * 24)
   );
 
-//   console.log("=======================================");
-//   console.log("Elapsed Days:", elapseDays);
-//   console.log("Status:", status);
-//   console.log(
-//     "If time elapsed:",
-//     !(status === "On Process" && elapseDays <= 15)
-//   );
-//   console.log("=======================================");
-  return !(status === "On Process" && elapseDays <= 15);
+  // console.log("===========================")
+  // console.log("Frequency:", frequency)
+  // console.log("Remaining Days:", remainingDays)
+  // console.log("If days less than 30 and Onprocess:", remainingDays <= 30 && status === "On Process")
+  // console.log("===========================")
+
+  return remainingDays <= 30 && status === "On Process";
 };
