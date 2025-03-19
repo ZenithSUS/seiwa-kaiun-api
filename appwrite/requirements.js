@@ -16,14 +16,14 @@ export const getRequirements = async () => {
   const limit = 100; 
 
   while (true) {
-    const documents = await databases.listDocuments(DATABASE_ID, REQUIREMENTS_ID, [
+    const {documents} = await databases.listDocuments(DATABASE_ID, REQUIREMENTS_ID, [
       Query.limit(limit),
       Query.offset(offset)
     ]);
 
     if (documents.length === 0) break;
 
-    allDocuments = [...allDocuments, ...documents.documents];
+    allDocuments = [...allDocuments, ...documents];
 
     offset += limit;
   }
