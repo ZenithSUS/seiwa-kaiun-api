@@ -1,5 +1,5 @@
 import { DATABASE_ID, REQUIREMENTS_ID,  databases } from "./index.js";
-import sdk from "node-appwrite";
+import sdk, { Query } from "node-appwrite";
 
 export const addRequirement = async (data) => {
   await databases.createDocument(
@@ -11,7 +11,7 @@ export const addRequirement = async (data) => {
 };
 
 export const getRequirements = async () => {
-  return await databases.listDocuments(DATABASE_ID, REQUIREMENTS_ID);
+  return await databases.listDocuments(DATABASE_ID, REQUIREMENTS_ID, [Query(100)]);
 };
 
 export const getRequirement = async (documentId) => {
