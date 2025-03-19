@@ -1,5 +1,5 @@
 import { DATABASE_ID, USERS_ID, databases, users } from "./index.js";
-import sdk from "node-appwrite";
+import sdk, { Query } from "node-appwrite";
 
 export const addUser = async (data) => {
   const { password, name, ...values } = data;
@@ -9,7 +9,24 @@ export const addUser = async (data) => {
 };
 
 export const getUsers = async () => {
-  return await databases.listDocuments(DATABASE_ID, USERS_ID);
+   let allUsers = [];
+    let offset = 0;
+    const limit = 100; 
+  
+    while (true) {
+      const {documents} = await databases.listDocuments(DATABASE_ID, USERS_ID, [
+        Query.limit(limit),
+        Query.offset(offset)
+      ]);
+  
+      if (documents.length === 0) break;
+  
+      allUsers = [...allUsers, ...documents];
+  
+      offset += limit;
+    }
+  
+    return allUsers;
 };
 
 export const getUser = async (userId) => {
