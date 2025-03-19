@@ -20,10 +20,10 @@ export const getAllRequirements = async (req, res) => {
       return res
         .status(200)
         .json(
-          requirements.documents.filter((r) => r.department === department)
+          requirements.filter((r) => r.department === department)
         );
     } else {
-      return res.status(200).json(requirements.documents);
+      return res.status(200).json(requirements);
     }
   } catch (error) {
     res.status(500).json({
