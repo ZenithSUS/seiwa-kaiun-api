@@ -1,6 +1,6 @@
 export const checkFrequency = (status, remainingDays, frequency) => {
   if (isNaN(remainingDays)) return false;
-  if (status === "Expired" || remainingDays <= 0) return false;
+  if (status === "Expired" || status === "Inactive" || remainingDays <= 0) return false;
 
   const annualFrequencies = [
     "Annual",
