@@ -47,7 +47,7 @@ cron.schedule("0 0 * * *", async () => {
   if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
-      const { documents: requirements } = await getRequirements();
+      const requirements  = await getRequirements();
       const today = new Date();
       console.log(requirements);
       requirements.forEach((requirement) => {
@@ -59,7 +59,8 @@ cron.schedule("0 0 * * *", async () => {
 
         if (
           checkFrequency(requirement.status, remainingDays, frequency) &&
-          isProcess(requirement.status, expirationDate, requirement.onProcessedDate, frequency)
+          isProcess(requirement.status, expirationDate, requirement.onProcessedDate, frequency) &&
+          requirement.status !== "Expired"
         ) {
           const email = requirement.personInCharge;
           const subject = "Subscription Expiration Reminder";
