@@ -7,6 +7,10 @@ import {
 import dotenv from "dotenv";
 import { checkFrequency } from "./utils/check-frequency.js";
 import { isProcess } from "./utils/check-onprocess.js";
+import {
+  expirationMessage,
+  expiredMessage,
+} from "./components/expiration-message.js";
 dotenv.config();
 
 // Configure nodemailer
@@ -47,7 +51,7 @@ cron.schedule("0 0 * * *", async () => {
   if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
-      const requirements  = await getRequirements();
+      const requirements = await getRequirements();
       const today = new Date();
       console.log(requirements);
       requirements.forEach((requirement) => {
@@ -59,29 +63,28 @@ cron.schedule("0 0 * * *", async () => {
 
         if (
           checkFrequency(requirement.status, remainingDays, frequency) &&
-          isProcess(requirement.status, expirationDate, requirement.onProcessedDate, frequency) &&
+          isProcess(
+            requirement.status,
+            expirationDate,
+            requirement.onProcessedDate,
+            frequency
+          ) &&
           requirement.status !== "Expired"
         ) {
+          const emailData = {
+            entity: requirement.entity,
+            personInCharge: requirement.personInCharge,
+            complianceList: requirement.complianceList,
+            dateSubmitted: requirement.dateSubmitted,
+            typeOfCompliance: requirement.typeOfCompliance,
+            remainingDays,
+            expirationDate,
+            frequency,
+          };
           const email = requirement.personInCharge;
           const subject = "Subscription Expiration Reminder";
           const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
-          const html = `
-              <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                <h2>Subscription Expiration Reminder</h2>
-                <p>Dear ${requirement.personInCharge},</p>
-                <p>Your subscription "<strong>${
-                  requirement.complianceList
-                }</strong>" is expiring in ${remainingDays} days.</p>
-                <p>Please take the necessary actions.</p>
-                <p>Best regards,</p>
-                <p>Seiwa Kaiun Philippines Inc.</p>
-                <a href=${
-                  process.env.NODE_ENV === "development"
-                    ? process.env.APP_FRONTEND_URL_DEV
-                    : process.env.APP_FRONTEND_URL
-                } style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
-              </div>
-            `;
+          const html = expirationMessage(emailData);
           sendEmail(email, subject, text, html);
         }
       });
@@ -118,23 +121,10 @@ cron.schedule("0 16 * * *", async () => {
             const email = requirement.personInCharge;
             const subject = "Subscription Expired";
             const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" has expired.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
-            const html = `
-              <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                <h2>Subscription Expired</h2>
-                <p>Dear ${requirement.personInCharge},</p>
-                <p>Your subscription "<strong>${
-                  requirement.complianceList
-                }</strong>" has expired.</p>
-                <p>Please take the necessary actions.</p>
-                <p>Best regards,</p>
-                <p>Seiwa Kaiun Philippines Inc.</p>
-                <a href=${
-                  process.env.NODE_ENV === "development"
-                    ? process.env.APP_FRONTEND_URL_DEV
-                    : process.env.APP_FRONTEND_URL
-                } style="background-color: #FF0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Renew Now</a>
-              </div>
-            `;
+            const html = expiredMessage({
+              personInCharge: requirement.personInCharge,
+              complianceList: requirement.complianceList,
+            });
             sendEmail(email, subject, text, html);
 
             console.log(
