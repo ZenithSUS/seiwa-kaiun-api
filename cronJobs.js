@@ -101,22 +101,23 @@ cron.schedule("0 16 * * *", async () => {
   if (philippineTime.getHours() === 0 && philippineTime.getMinutes() === 0) {
     console.log("Midnight cron job started at:", philippineTime.toISOString());
     try {
-      const { documents: requirements } = await getRequirements();
+      const requirements = await getRequirements();
 
-      const today = new Date();
+      if (requirements && Array.isArray(requirements)) {
+        const today = new Date();
 
-      requirements.forEach(async (requirement) => {
-        const expiration = new Date(requirement.expiration);
-        const remainingDays = Math.ceil(
-          (expiration - today) / (1000 * 60 * 60 * 24)
-        );
+        requirements.forEach(async (requirement) => {
+          const expiration = new Date(requirement.expiration);
+          const remainingDays = Math.ceil(
+            (expiration - today) / (1000 * 60 * 60 * 24)
+          );
 
-        if (remainingDays === 0) {
-          await updateRequirementById({ status: "Expired" }, requirement.$id);
-          const email = requirement.personInCharge;
-          const subject = "Subscription Expired";
-          const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" has expired.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
-          const html = `
+          if (remainingDays <= 0 && requirement.status !== "Expired") {
+            await updateRequirementById({ status: "Expired" }, requirement.$id);
+            const email = requirement.personInCharge;
+            const subject = "Subscription Expired";
+            const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" has expired.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
+            const html = `
               <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                 <h2>Subscription Expired</h2>
                 <p>Dear ${requirement.personInCharge},</p>
@@ -133,13 +134,16 @@ cron.schedule("0 16 * * *", async () => {
                 } style="background-color: #FF0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Renew Now</a>
               </div>
             `;
-          sendEmail(email, subject, text, html);
+            sendEmail(email, subject, text, html);
 
-          console.log(
-            `Updated status to Expired for requirement ID: ${requirement.$id}`
-          );
-        }
-      });
+            console.log(
+              `Updated status to Expired for requirement ID: ${requirement.$id}`
+            );
+          }
+        });
+      } else {
+        console.log("No requirements found or invalid data format.");
+      }
     } catch (error) {
       console.log("Error in midnight cron job:", error);
     }
