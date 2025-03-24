@@ -32,11 +32,11 @@ export const getActivities = async () => {
   return allDocuments;
 };
 
-export const getActivity = async (documentId) => {
+export const getActivity = async (activityId) => {
   const result = await databases.getDocument(
     DATABASE_ID,
     ACTIVITIES_ID,
-    documentId
+    activityId
   );
 
   return result;

@@ -3,6 +3,7 @@ import cors from "cors";
 import path from "path";
 import users from "./routes/users.js";
 import requirments from "./routes/requirements.js";
+import activities from "./routes/activity-logs.js";
 import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
@@ -42,6 +43,7 @@ app.get("/favicon.ico", (req, res) => res.status(204).end());
 // Routes
 app.use("/api/users", users);
 app.use("/api/requirements", requirments);
+app.use("/api/activity-logs", activities);
 
 // Error Handlers
 app.use(notFound);
