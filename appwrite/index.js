@@ -17,5 +17,6 @@ export const users = new sdk.Users(client);
 
 export const DATABASE_ID = !isProd ? process.env.APP_WRITE_DATABASE_ID_DEV : process.env.APP_WRITE_DATABASE_ID;
 export const REQUIREMENTS_ID = !isProd ? process.env.COLLECTION_ID_REQUIREMENTS_DEV : process.env.COLLECTION_ID_REQUIREMENTS;
+export const ACTIVITIES_ID = !isProd ? process.env.COLLECTION_ID_ACTIVITIES_DEV : process.env.COLLECTION_ID_ACTIVITIES;
 export const USERS_ID = !isProd ? process.env.COLLECTION_ID_USERS_DEV : process.env.COLLECTION_ID_USERS;
 export const BUCKET_ID = !isProd ? process.env.APP_WRITE_BUCKET_ID_DEV : process.env.APP_WRITE_BUCKET_ID;

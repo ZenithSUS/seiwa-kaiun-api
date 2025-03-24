@@ -63,10 +63,10 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { firstName, middleName, lastName, department } = req.body;
+  const { firstName, middleName, lastName, department, email } = req.body;
   const id = req.params.id; 
 
-  if (!firstName || !lastName) {
+  if (!firstName || !lastName || !department || !email) {
     return res.status(400).json({
       status: res.statusCode,
       message: "All fields are required",
@@ -74,7 +74,7 @@ export const updateUser = async (req, res) => {
   }
 
   try {
-    await editUser({ email, firstName, lastName, middleName, department }, id);
+    await editUser({ firstName, lastName, middleName, department, email }, id);
 
     return res.status(200).json({
       status: res.statusCode,
