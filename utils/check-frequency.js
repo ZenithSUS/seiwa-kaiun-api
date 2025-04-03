@@ -17,6 +17,7 @@ export const checkFrequency = (status, remainingDays, frequency) => {
       frequency === "Monthly") ||
     (remainingDays <= 90 && annualFrequencies.includes(frequency)) ||
     (remainingDays <= 30 && frequency === "Quarterly") ||
+    (remainingDays <= 15 && frequency === "Others") ||
     (remainingDays <= 180 && frequency === "10 Years")
   );
 };

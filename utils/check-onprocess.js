@@ -1,5 +1,5 @@
 export const isProcess = (status, expirationDate, onProcessedDate, frequency) => {
-  if (status !== "On Process" || frequency === "Monthly") return true;
+  if (status !== "On Process" || frequency === "Monthly" || frequency === "Others") return true;
 
   if(!onProcessedDate || onProcessedDate === null || onProcessedDate === "") return false
 
