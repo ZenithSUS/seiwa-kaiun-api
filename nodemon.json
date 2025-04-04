@@ -13,6 +13,7 @@
         "entrypoint.sh",
         "README.md"
     ],
+    "delay": 5000,
     "env": {
         "NODE_ENV": "production"
     },
