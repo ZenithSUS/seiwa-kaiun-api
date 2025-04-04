@@ -20,6 +20,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.CRON_JOB_EMAIL,
     pass: process.env.CRON_JOB_APP_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 
 // Function to send email
