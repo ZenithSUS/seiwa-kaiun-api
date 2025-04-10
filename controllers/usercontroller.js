@@ -92,15 +92,6 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const users = await getUser();
-
-
-    if (!user) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: "User not found",
-      });
-    }
 
     await deleteDoc(doc(db, "Users", userId));
 
