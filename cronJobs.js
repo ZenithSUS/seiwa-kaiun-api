@@ -15,13 +15,15 @@ dotenv.config();
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "mail.seiwakaiun.com.ph",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.CRON_JOB_EMAIL,
     pass: process.env.CRON_JOB_APP_PASSWORD,
   },
   tls: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // Allow self-signed certificates
   },
 });
 
