@@ -28,7 +28,7 @@ export const createActivity = async (req, res) => {
 // Get all activities
 export const getActivities = async (req, res) => {
   try {
-    const department = req.params.dept;
+    const department = req.query.dept;
 
     const activities = await fetchActivities(department);
 
