@@ -1,7 +1,7 @@
 import {
   addActivity,
   getActivities as fetchActivities,
-  getActivity
+  getActivity,
 } from "../appwrite/activities.js";
 // Create a new activity
 export const createActivity = async (req, res) => {
@@ -14,9 +14,9 @@ export const createActivity = async (req, res) => {
 
     await addActivity(req.body);
     return res.status(200).json({
-        status: res.statusCode,
-        message: "Created Successfully"
-    })
+      status: res.statusCode,
+      message: "Created Successfully",
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
@@ -28,7 +28,7 @@ export const createActivity = async (req, res) => {
 // Get all activities
 export const getActivities = async (req, res) => {
   try {
-    const department = req.params.department;
+    const department = req.params.dept;
 
     const activities = await fetchActivities(department);
 
