@@ -9,7 +9,7 @@ import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { error } from "./middleware/error.js";
 import "./cronJobs.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -19,7 +19,6 @@ const port = process.env.NODE_ENV === "development" ? 8080 : false || 8000;
 // Base directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 // Initialize app
 const app = express();
@@ -49,8 +48,8 @@ app.use("/api/activity-logs", activities);
 app.use(notFound);
 app.use(error);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.listen(port, () => {

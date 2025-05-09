@@ -19,9 +19,7 @@ export const getAllRequirements = async (req, res) => {
     if (department) {
       return res
         .status(200)
-        .json(
-          requirements.filter((r) => r.department === department)
-        );
+        .json(requirements.filter((r) => r.department === department));
     } else {
       return res.status(200).json(requirements);
     }
@@ -101,7 +99,7 @@ export const updateRequirementRenewal = async (req, res) => {
     const requirementId = req.params.id;
     const { renewal, frequency } = req.body;
     const newExpiration = calculateExpirationDate(renewal, frequency);
- 
+
     if (!renewal || !frequency) {
       return res.status(401).json({
         message: "Renewal or Frequency is required",
@@ -109,7 +107,12 @@ export const updateRequirementRenewal = async (req, res) => {
     }
 
     await updateDocumentRenewal(
-      { expiration: newExpiration, dateSubmitted: renewal, renewal: renewal, status: "Active" },
+      {
+        expiration: newExpiration,
+        dateSubmitted: renewal,
+        renewal: renewal,
+        status: "Active",
+      },
       requirementId
     );
 
